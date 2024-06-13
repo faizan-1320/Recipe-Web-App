@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Flask Recipe App{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <!-- Bootstrap CSS (assuming you use Bootstrap) -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <style>
+        /* Custom styles for navbar */
+        .navbar {
+            background-color: #343a40; /* Dark background color */
+        }
+        .navbar .brand {
+            color: #ffffff; /* White text color */
+            font-size: 1.5rem; /* Larger font size */
+            font-weight: bold; /* Bold font weight */
+        }
+        .navbar .navbar-links {
+            margin-left: auto; /* Align links to the right */
+        }
+        .navbar .navbar-links a {
+            color: #ffffff; /* White text color for links */
+            margin-left: 10px; /* Add spacing between links */
+        }
+        .navbar .dropdown {
+            position: relative; /* Position dropdown content */
+            display: inline-block; /* Display as inline block */
+        }
+        .navbar .dropdown-content {
+            display: none; /* Hide dropdown content by default */
+            position: absolute; /* Position dropdown */
+            background-color: #f9f9f9; /* Light background color */
+            min-width: 160px; /* Set minimum width */
+            z-index: 1; /* Ensure dropdown stays on top */
+        }
+        .navbar .dropdown-content a {
+            color: #343a40; /* Dark text color for dropdown links */
+            padding: 12px 16px; /* Padding for dropdown links */
+            text-decoration: none; /* Remove underline */
+            display: block; /* Display block */
+        }
+        .navbar .dropdown-content a:hover {
+            background-color: #ddd; /* Darken background on hover */
+        }
+        .navbar .dropdown:hover .dropdown-content {
+            display: block; /* Display dropdown content on hover */
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="{{ url_for('authentication.home') }}" class="brand">Recipe App</a>
+            <div class="navbar-links">
+                
+                {% if current_user.is_authenticated %}
+                    <div class="dropdown">
+                        <button class="dropbtn">{{ current_user.username }}</button>
+                        <div class="dropdown-content">
+                            <a href="{{ url_for('recipe.list_recipes') }}">Your Recipes</a>
+                            <a href="{{ url_for('authentication.change_password') }}">Change Password</a>
+                            <a href="{{ url_for('authentication.logout') }}">Logout</a>
+                        </div>
+                    </div>
+                {% else %}
+                    <a href="{{ url_for('authentication.login') }}">Login</a>
+                    <a href="{{ url_for('authentication.register') }}">Register</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </div>
+
+    <!-- Bootstrap JS (for responsive navbar) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js" integrity="sha384-Vrf65LpHha3lJO9vG2MJA1TwP8pL2bhE3ovPy2z7T5Q3EG5iknEE2tYjkqb+/+iE" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8sh+oEUDYvCy5b8pfnE+Iv2S5m/wdOV7/dJ3Y6" crossorigin="anonymous"></script>
+</body>
+</html>

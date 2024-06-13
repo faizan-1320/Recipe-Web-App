@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+    <h1>All Recipes</h1>
+    <div class="recipe-list">
+        {% for recipe in recipes %}
+            <div class="recipe-card">
+                <h2><a href="{{ url_for('recipe.view_recipe', id=recipe.id) }}">{{ recipe.title }}</a></h2>
+                <p>{{ recipe.description }}</p>
+                <p>By {{ recipe.author }} on {{ recipe.created_at.strftime('%Y-%m-%d') }}</p>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

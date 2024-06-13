@@ -1,0 +1,17 @@
+<!-- templates/recipes/view.html -->
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>{{ recipe.title }}</h2>
+    <p><strong>Description:</strong> {{ recipe.description }}</p>
+    <p><strong>Ingredients:</strong> {{ recipe.ingredients }}</p>
+    <p><strong>Instructions:</strong> {{ recipe.instructions }}</p>
+    {% if current_user.is_authenticated and current_user.id == recipe.user_id %}
+        <div>
+            <a href="{{ url_for('recipe.edit_recipe', id=recipe.id) }}" class="btn btn-warning">Edit Recipe</a>
+            <form action="{{ url_for('recipe.delete_recipe', id=recipe.id) }}" method="post" style="display: inline-block;">
+                <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this recipe?')">Delete Recipe</button>
+            </form>
+        </div>
+    {% endif %}
+{% endblock %}
