@@ -11,11 +11,10 @@ import secrets
 authentication_bp = Blueprint('authentication', __name__)
 
 class User(UserMixin):
-    def __init__(self, id, email, username, password):
+    def __init__(self, id, email, username):
         self.id = id
         self.email = email
         self.username = username
-        self.password = password
 
 class RegistrationForm(FlaskForm):
     username = StringField('Username', 
@@ -111,7 +110,7 @@ def login():
             check_pass = check_password_hash(
                 user[3], form.password.data)
             if check_pass:
-                user_obj = User(user[0], user[1], user[2], user[3])
+                user_obj = User(user[0], user[1], user[2])
                 login_user(user_obj)
                 return redirect(url_for('authentication.home'))
             else:
@@ -202,7 +201,10 @@ def forgot_password():
 
 # Define the form for resetting the password
 class PasswordResetForm(FlaskForm):
-    new_password = PasswordField('New Password', validators=[DataRequired()])
+    new_password = PasswordField('New Password', validators=[DataRequired(),
+                                        Length(min=8, message='Password must be at least 8 characters long'),
+                                        Regexp('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@$!%*?&])', 
+                                        message='Password must contain at least one lowercase letter, one uppercase letter, one digit, and one special character')])
     confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('new_password')])
     submit = SubmitField('Reset Password')
 
