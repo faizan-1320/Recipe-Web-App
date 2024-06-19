@@ -69,7 +69,7 @@ This is a simple recipe management web application built with Flask. The applica
         id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
         username VARCHAR(20) NOT NULL UNIQUE,
         email VARCHAR(120) NOT NULL UNIQUE,
-        password VARCHAR(60) NOT NULL
+        password VARCHAR(256) NOT NULL
     )
     CREATE TABLE tbl_recipe (
         id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
